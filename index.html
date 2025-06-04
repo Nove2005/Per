@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>GSEGLENN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add this in your <head> to load FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background: #0A0A0A;
+            color: #00FFB9;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+            padding: 15px;
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 255, 185, 0.3);
+            flex-shrink: 0;
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #00FFB9;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            margin-left: 20px;
+            flex-grow: 1;
+        }
+
+        .content-section {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        .section {
+            margin: 10px;
+            padding: 15px;
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 255, 185, 0.3);
+        }
+
+        #header {
+            padding: 20px;
+            background: url("/img/Picsart_24-08-25_10-07-45-476.jpg") no-repeat center;
+            background-size: cover;
+            position: relative;
+        }
+
+        #header img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #00FFB9;
+            display: block;
+        }
+
+        #header p {
+            margin: 10px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #00FFB9;
+        }
+
+        progress {
+            width: 90%;
+            margin: 10px 0;
+            height: 10px;
+        }
+
+        progress::-webkit-progress-bar {
+            background-color: #333;
+        }
+
+        progress::-webkit-progress-value {
+            background-color: #00FFB9;
+        }
+
+        .button {
+            background-color: #00FFB9;
+            color: #0A0A0A;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .button:hover {
+            background-color: #00A8A8;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: rgba(20, 20, 20, 0.9);
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #00FFB9;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 185, 0.5);
+            text-align: center;
+        }
+
+        .close {
+            color: #00FFB9;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #00A8A8;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 185, 0.5);
+        }
+
+        .message-input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #1A1A1A;
+            border: 1px solid #00FFB9;
+            color: #00FFB9;
+            border-radius: 5px;
+            outline: none;
+            resize: vertical;
+        }
+
+        #formStatus.loading::after {
+            content: "";
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 8px;
+            border: 2px solid #00FFB9;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-link {
+    font-size: 20px;
+    color: #00FFB9;
+    background: #1A1A1A;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.social-link:hover {
+    background: #00A8A8;
+    transform: scale(1.1);
+}
+.social-footer {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.green-line {
+    width: 5px;
+    height: 10px;
+    background-color: #00FFB9;
+    margin-right: 15px;
+    border-radius: 3px;
+}
+
+.date-text {
+    color: #00FFB9;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="profile-section">
+            <img class="profile-pic" src="/img/IMG_20241223_090742_390.jpg" alt="Profile Picture">
+            <div class="profile-info">
+                <h3>Glenn Sam Evangelio</h3>
+                <button class="button" id="photosBtn">Photos</button>
+                <button class="button" id="messageBtn">Message</button>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section">
+                <h2>About Me</h2>
+                <p>I'm Glenn Sam Evangelio, a passionate web developer with a love for creating futuristic, user-friendly websites. I enjoy exploring new technologies and constantly improving my skills in HTML, CSS, and JavaScript. Let's connect and build something awesome together!</p>
+            </div>
+
+            <div class="section">
+                <p>HTML 90%</p>
+                <progress value="90" max="100"></progress>
+                <p>CSS 80%</p>
+                <progress value="80" max="100"></progress>
+                <p>JavaScript 70%</p>
+                <progress value="60" max="100"></progress>
+            </div>
+<div class="section">
+    <h2>Social Media</h2>
+    <div class="social-icons">
+        <a href="https://www.facebook.com/glenn.sam.evangelio.2025" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://t.me/" target="_blank" class="social-link"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://tiktok.com/" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
+        <div class="social-footer">
+    <div class="green-line"></div>
+    <div class="date-text" id="currentDate"></div>
+</div>
+    </div>
+</div>
+
+            <footer>
+                <p>©GSE2005</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Photos Modal -->
+    <div id="photosModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>My Photos</h2>
+            <div class="photo-grid">
+                <img src="/img/Picsart_24-12-04_17-20-39-417.png" alt="Photo 3">
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Private Message</h2>
+           <form method="POST" id="form">
+    <input type="hidden" name="access_key" value="3e4f758d-de26-4bd1-96d6-6f4c005d757f">
+    
+    <input
+        type="text"
+        name="contact"
+        placeholder="Your Email or Phone"
+        required
+        class="message-input"
+        style="margin-bottom: 10px;"
+    >
+    
+    <textarea
+        name="message"
+        id="messageInput"
+        class="message-input"
+        placeholder="Type your message here..."
+        required
+    ></textarea>
+    
+    <button type="submit" class="button">Send Message</button>
+</form>
+<div id="formStatus" style="margin-top: 10px; color: #00FFB9;"></div>
+        </div>
+    </div>
+
+    <script>
+        const photosModal = document.getElementById("photosModal");
+        const messageModal = document.getElementById("messageModal");
+        const photosBtn = document.getElementById("photosBtn");
+        const messageBtn = document.getElementById("messageBtn");
+        const closeButtons = document.getElementsByClassName("close");
+
+        photosBtn.onclick = () => photosModal.style.display = "block";
+        messageBtn.onclick = () => messageModal.style.display = "block";
+
+        Array.from(closeButtons).forEach(btn => {
+            btn.onclick = () => {
+                photosModal.style.display = "none";
+                messageModal.style.display = "none";
+            }
+        });
+
+        window.onclick = (event) => {
+            if (event.target == photosModal) photosModal.style.display = "none";
+            if (event.target == messageModal) messageModal.style.display = "none";
+        }
+
+        const form = document.getElementById('form');
+        const formStatus = document.getElementById('formStatus');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            formStatus.classList.add("loading");
+            formStatus.textContent = "Sending...";
+
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+            .then(async (response) => {
+                let json = await response.json();
+                formStatus.classList.remove("loading");
+                if (response.status === 200) {
+                    formStatus.textContent = "Message sent successfully!";
+                    form.reset();
+                } else {
+                    formStatus.textContent = "Error: " + json.message;
+                }
+            })
+            .catch(error => {
+                formStatus.classList.remove("loading");
+                formStatus.textContent = "Fetch Error: " + error;
+            });
+        });
+        
+  function updateDate() {
+    const dateEl = document.getElementById("currentDate");
+    const now = new Date();
+
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+
+    dateEl.textContent = now.toLocaleDateString(undefined, options);
+  }
+
+  updateDate();
+  setInterval(updateDate, 60 * 1000); // optional: updates every minute
+    </script>
+</body>
+</html>
